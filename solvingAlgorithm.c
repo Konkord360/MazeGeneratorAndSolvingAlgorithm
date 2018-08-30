@@ -159,8 +159,3 @@ int countPossibleWays(WayOut *current, const int width) {
 		current->node = current->node + 1;
 	return possibleWays;
 }
-
-
-void dodajmyFunkcjêTestowaZebySprawdzicCzyDobrzeDzialaGit() {
-	return 0;
-}
