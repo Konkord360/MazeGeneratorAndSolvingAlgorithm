@@ -1,16 +1,5 @@
 #include "libraries.h"
 
-//void setSizes(int *height, int*width)
-//{
-//		setDimensionsManually(&(*height), &(*width));
-//	else {
-//		*height = atoi(*argv[1]);
-//		*width = atoi(*argv[2]);
-//		printf("wysokosc: %d \n szerokosc: %d ", height, width);
-//		system("pause");
-//		argc = 1;
-//}
-
 void setDimensionsManually(int *width, int *height)
 {
 		printf("Set width: ");
@@ -50,4 +39,19 @@ void validateSizes(const int height, const int width)
 		printf("dimensions must be odd!\n");
 		exit(1);
 	}
+}
+
+char viewMenu() {
+	char choice = ' ';
+	printf("1.Wygeneruj labirynt\n");
+	printf("2.koniec\n");
+	scanf(" %c", &choice);
+
+	return choice;
+}
+
+void showTheWay(int *width, int *height, Node **nodes) {
+	draw(*width, *height, *nodes);
+	solvingAlgorithm(&(*nodes), *width, *height);
+	draw(*width, *height, *nodes);
 }

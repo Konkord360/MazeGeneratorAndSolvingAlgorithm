@@ -6,6 +6,6 @@
 void setDimensionsManually(int *height, int *width);
 void draw(const int width, const int height, const Node *nodes);
 void validateSizes(const int height, const int width);
-//void setSizes(int *height, int*width);
+char viewMenu();
 
 #endif

@@ -110,3 +110,10 @@ void setupStartNode(Node ** start, Node ** last, Node ** nodes,const int width)
 	(*start)->parent = *start;
 	*last = *start;
 }
+
+void resetLabirynth(int *width, int *height, Node **nodes) {
+	free(*nodes);
+	*nodes = NULL;
+	*width = 0;
+	*height = 0;
+}
