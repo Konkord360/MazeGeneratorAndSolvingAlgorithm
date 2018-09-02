@@ -1,39 +1,42 @@
-#include "libraries.h"
+#include "includes.h"
 
 int main(int argc, char **argv)
 {
 	srand(time(NULL));
 	Node *start = NULL, *last = NULL, *nodes = NULL;
-	int width=0, height=0;
-	char choice = ' ';
+	int width = 0, height = 0, choice = 0;
+	enum choice { generateLabirynth = 1, endProgram = 2};
+	bool areSizesValid = false;
 
-	while (choice != '2') 
+	while (choice != endProgram)
 	{
 		if (argc == 1)
 			choice = viewMenu();
 
 		else
 		{
-			height = atoi(argv[1]);
-			width = atoi(argv[2]);
-			choice = '1';
-			argc = 1;
+			getValuesFromCommandLineArguments(&height, &width, argv);
+			choice = generateLabirynth;
 		}
 
 		switch (choice)
 		{
-		case '1':
-			if(height == 0)
-				setDimensionsManually(&width, &height);
+		case generateLabirynth:
+			do {
+				if(argc == 1)
+					setDimensionsManually(&width, &height);
 
-			validateSizes(height, width);
+				areSizesValid = validateSizes(height, width);
+				argc = 1;
+			} while (!areSizesValid);
+
 			initialize(width, height, &nodes);
 			setupStartNode(&start, &last, &nodes, width);
 
 			while ((last = link(last, width, height, &nodes)) != start);
 			break;
 
-		case '2':
+		case endProgram:
 			_CrtDumpMemoryLeaks();
 			return 0;
 		}

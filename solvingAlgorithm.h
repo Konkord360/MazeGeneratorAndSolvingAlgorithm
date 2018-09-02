@@ -12,6 +12,9 @@ typedef struct way
 
 void solvingAlgorithm(Node **nodes, const int width, const int height);
 int nextDirection(WayOut *current, int width);
-void comeBackFromDeadEnd(WayOut* current, const int width);
+void addTheNextNode(WayOut **current);
+void comeBackFromDeadEnd(WayOut** current, const int width);
 int countPossibleWays(WayOut *current, const int width);
+void freeMemoryAllocatedForlist(WayOut **current);
+void initializeList(WayOut** wayOutHead, WayOut** current, Node **nodes, const int width);
 #endif

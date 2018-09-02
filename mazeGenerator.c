@@ -1,4 +1,4 @@
-#include "libraries.h"
+#include "includes.h"
 int initialize(const int width, const int height, Node **nodes)
 {
 	int i, j;
@@ -6,7 +6,8 @@ int initialize(const int width, const int height, Node **nodes)
 
 	*nodes = calloc(width * height, sizeof(Node));
 
-	for (i = 0; i < width; i++) {
+	for (i = 0; i < width; i++) 
+	{
 		for (j = 0; j < height; j++)
 		{
 			n = (*nodes) + i + j * width;
@@ -40,16 +41,19 @@ Node *link(Node *n, const int width, const int height, Node **nodes)
 	char dir;
 	Node *dest;
 
-	if (n == NULL) return NULL;
+	if (n == NULL) 
+		return NULL;
 
 	while (n->directionsToExplore)
 	{
+		//setDirection(&n, width, height, &x, &y);
 		dir = (1 << (rand() % 4));
-
-		if (~n->directionsToExplore & dir) continue;
-
+		
+		if (~n->directionsToExplore & dir)
+			continue;
+		
 		n->directionsToExplore &= ~dir;
-
+		
 		switch (dir)
 		{
 		case 1:
@@ -60,7 +64,7 @@ Node *link(Node *n, const int width, const int height, Node **nodes)
 			}
 			else continue;
 			break;
-
+		
 		case 2:
 			if (n->y + 2 < height)
 			{
@@ -69,7 +73,7 @@ Node *link(Node *n, const int width, const int height, Node **nodes)
 			}
 			else continue;
 			break;
-
+		
 		case 4:
 			if (n->x - 2 >= 0)
 			{
@@ -78,7 +82,7 @@ Node *link(Node *n, const int width, const int height, Node **nodes)
 			}
 			else continue;
 			break;
-
+		
 		case 8:
 			if (n->y - 2 >= 0)
 			{
@@ -104,6 +108,58 @@ Node *link(Node *n, const int width, const int height, Node **nodes)
 	return n->parent;
 }
 
+void setDirection(Node *n, const int width, const int height, int *x, int* y)
+{
+
+	char dir;
+
+	dir = (1 << (rand() % 4));
+
+	//if (~n->directionsToExplore & dir)
+	//	continue;
+
+	n->directionsToExplore &= ~dir;
+
+	switch (dir)
+	{
+	case 1:
+		if (n->x + 2 < width)
+		{
+			x = n->x + 2;
+			y = n->y;
+		}
+		//else continue;
+		break;
+
+	case 2:
+		if (n->y + 2 < height)
+		{
+			x = n->x;
+			y = n->y + 2;
+		}
+		//else continue;
+		break;
+
+	case 4:
+		if (n->x - 2 >= 0)
+		{
+			x = n->x - 2;
+			y = n->y;
+		}
+		//else continue;
+		break;
+
+	case 8:
+		if (n->y - 2 >= 0)
+		{
+			x = n->x;
+			y = n->y - 2;
+		}
+		//else continue;
+		break;
+	}
+}
+
 void setupStartNode(Node ** start, Node ** last, Node ** nodes,const int width)
 {
 	*start = *nodes + 1 + width;
@@ -111,9 +167,16 @@ void setupStartNode(Node ** start, Node ** last, Node ** nodes,const int width)
 	*last = *start;
 }
 
-void resetLabirynth(int *width, int *height, Node **nodes) {
+void resetLabirynth(int *width, int *height, Node **nodes)
+{
 	free(*nodes);
 	*nodes = NULL;
 	*width = 0;
 	*height = 0;
+}
+
+void getValuesFromCommandLineArguments(int *width, int *height, char ***argv)
+{
+	*width = atoi(argv[1]);
+    *height = atoi(argv[2]);
 }
