@@ -31,8 +31,17 @@ int initialize(const int width, const int height, Node **nodes)
 
 void setExitAndEntrance(const int width, const int height, Node **nodes)
 {
-	(*nodes)[width].displayCharacter = ' ';
-	(*nodes)[((width) * (height - 1)) - 1].displayCharacter = ' ';
+	int startHeight = 0, endHeight = 0;
+
+	do {
+		startHeight = rand() % height + 1;
+		(*nodes)[width].displayCharacter = ' ';
+	} while ((*nodes)[width + 1].displayCharacter != ' ');
+
+	do{
+		endHeight = rand() % height + 1;
+		(*nodes)[((width) * (height - 1)) - 1].displayCharacter = ' ';
+	} while ((*nodes)[((width) * (height - 1)) - 2].displayCharacter != ' ');
 }
 
 Node *link(Node *n, const int width, const int height, Node **nodes)
