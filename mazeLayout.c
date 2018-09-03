@@ -45,8 +45,8 @@ bool validateSizes(const int height, const int width)
 int viewMenu() 
 {
 	int choice = 0;
-	printf("1.Wygeneruj labirynt\n");
-	printf("2.koniec\n");
+	printf("1.Generate maze\n");
+	printf("2.End\n");
 	scanf(" %d", &choice);
 
 	return choice;
