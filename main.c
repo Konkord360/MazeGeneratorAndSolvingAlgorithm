@@ -31,9 +31,9 @@ int main(int argc, char **argv)
 			} while (!areSizesValid);
 
 			initialize(width, height, &nodes);
-			setupStartNode(&start, &last, &nodes, width);
-
+			setupStartNodeForGenerator(&start, &last, &nodes, width);
 			while ((last = link(last, width, height, &nodes)) != start);
+			setExitAndEntrance(width, height, &nodes);
 			break;
 
 		case endProgram:

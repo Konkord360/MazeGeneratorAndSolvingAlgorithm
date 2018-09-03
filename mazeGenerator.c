@@ -1,8 +1,8 @@
 #include "includes.h"
-int initialize(const int width, const int height, Node **nodes)
+void initialize(const int width, const int height, Node **nodes)
 {
 	int i, j;
-	Node *n;
+	Node *current;
 
 	*nodes = calloc(width * height, sizeof(Node));
 
@@ -10,93 +10,81 @@ int initialize(const int width, const int height, Node **nodes)
 	{
 		for (j = 0; j < height; j++)
 		{
-			n = (*nodes) + i + j * width;
+			current = (*nodes) + i + j * width;
 
 			if (i * j % 2)
 			{
-				n->x = i;
-				n->y = j;
-				n->directionsToExplore = 15; 
-				n->displayCharacter = ' ';
+				current->x = i;
+				current->y = j;
+				current->directionsToExplore = 15; 
+				current->displayCharacter = ' ';
 			}
 			else
-				n->displayCharacter = '#';
-			n->isVisited = false;
+				current->displayCharacter = '#';
+			current->isVisited = false;
 		}
 	}
-	setExitAndEntrance(width, height, &(*nodes));
-
-	return 0;
 }
 
 void setExitAndEntrance(const int width, const int height, Node **nodes)
 {
-	int startHeight = 0, endHeight = 0;
-
-	do {
-		startHeight = rand() % height + 1;
-		(*nodes)[width].displayCharacter = ' ';
-	} while ((*nodes)[width + 1].displayCharacter != ' ');
-
-	do{
-		endHeight = rand() % height + 1;
-		(*nodes)[((width) * (height - 1)) - 1].displayCharacter = ' ';
-	} while ((*nodes)[((width) * (height - 1)) - 2].displayCharacter != ' ');
+	(*nodes)[width].displayCharacter = ' ';
+	(*nodes)[((width) * (height - 1)) - 1].displayCharacter = ' ';
 }
 
-Node *link(Node *n, const int width, const int height, Node **nodes)
+Node *link(Node *current, const int width, const int height, Node **nodes)
 {
-	int x, y;
+	int x, y, numberOfDirections = 4;
 	char dir;
 	Node *dest;
+	enum directions{right = 1, down = 2, left = 4, up = 8};
 
-	if (n == NULL) 
+	if (current == NULL) 
 		return NULL;
 
-	while (n->directionsToExplore)
+	while (current->directionsToExplore)
 	{
-		//setDirection(&n, width, height, &x, &y);
-		dir = (1 << (rand() % 4));
+		dir = (1 << (rand() % numberOfDirections));
 		
-		if (~n->directionsToExplore & dir)
+		if (~current->directionsToExplore & dir)
 			continue;
 		
-		n->directionsToExplore &= ~dir;
+		current->directionsToExplore &= ~dir;
 		
 		switch (dir)
 		{
-		case 1:
-			if (n->x + 2 < width)
+		case right:
+			if (current->x + 2 < width)
 			{
-				x = n->x + 2;
-				y = n->y;
+				x = current->x + 2;
+				y = current->y;
 			}
 			else continue;
 			break;
 		
-		case 2:
-			if (n->y + 2 < height)
+		case down:
+			if (current->y + 2 < height)
 			{
-				x = n->x;
-				y = n->y + 2;
+				x = current->x;
+				y = current->y + 2;
 			}
 			else continue;
 			break;
 		
-		case 4:
-			if (n->x - 2 >= 0)
+		case left:
+			if (current->x - 2 >= 0)
 			{
-				x = n->x - 2;
-				y = n->y;
+				x = current->x - 2;
+				y = current->y;
 			}
 			else continue;
 			break;
 		
-		case 8:
-			if (n->y - 2 >= 0)
+		case up:
+			if (current->y - 2 >= 0)
 			{
-				x = n->x;
-				y = n->y - 2;
+				x = current->x;
+				y = current->y - 2;
 			}
 			else continue;
 			break;
@@ -107,69 +95,17 @@ Node *link(Node *n, const int width, const int height, Node **nodes)
 		{
 			if (dest->parent != NULL) continue;
 
-			dest->parent = n;
+			dest->parent = current;
 
-			(*nodes)[n->x + (x - n->x) / 2 + (n->y + (y - n->y) / 2) * width].displayCharacter = ' ';
+			(*nodes)[current->x + (x - current->x) / 2 + (current->y + (y - current->y) / 2) * width].displayCharacter = ' ';
 
 			return dest;
 		}
 	}
-	return n->parent;
+	return current->parent;
 }
 
-void setDirection(Node *n, const int width, const int height, int *x, int* y)
-{
-
-	char dir;
-
-	dir = (1 << (rand() % 4));
-
-	//if (~n->directionsToExplore & dir)
-	//	continue;
-
-	n->directionsToExplore &= ~dir;
-
-	switch (dir)
-	{
-	case 1:
-		if (n->x + 2 < width)
-		{
-			x = n->x + 2;
-			y = n->y;
-		}
-		//else continue;
-		break;
-
-	case 2:
-		if (n->y + 2 < height)
-		{
-			x = n->x;
-			y = n->y + 2;
-		}
-		//else continue;
-		break;
-
-	case 4:
-		if (n->x - 2 >= 0)
-		{
-			x = n->x - 2;
-			y = n->y;
-		}
-		//else continue;
-		break;
-
-	case 8:
-		if (n->y - 2 >= 0)
-		{
-			x = n->x;
-			y = n->y - 2;
-		}
-		//else continue;
-		break;
-	}
-}
-
-void setupStartNode(Node ** start, Node ** last, Node ** nodes,const int width)
+void setupStartNodeForGenerator(Node ** start, Node ** last, Node ** nodes,const int width)
 {
 	*start = *nodes + 1 + width;
 	(*start)->parent = *start;

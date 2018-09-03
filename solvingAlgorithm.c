@@ -12,7 +12,7 @@ void solvingAlgorithm(Node **nodes, const int width, const int height) {
 	do {
 		current->next = malloc(sizeof(WayOut));
 
-		switch (wayToCheck) 
+		switch (wayToCheck)
 		{
 		case right:
 			current->next->node = current->node + 1;
@@ -36,17 +36,18 @@ void solvingAlgorithm(Node **nodes, const int width, const int height) {
 
 		wayToCheck = nextDirection(current, width);
 	} while (current->node != &(*nodes)[((width) * (height - 1)) - 1]);
-	
+
 	current = wayOutHead;
 	freeMemoryAllocatedForlist(&current);
 }
 
 int nextDirection(WayOut *current, int width)
 {
+	enum directions { right = 0, down, up, left, deadEnd };
 	current->node = current->node + 1;
 	if (current->node->displayCharacter != '#' && current->node->isVisited == false) {
 		current->node = current->node - 1;
-		return 0;
+		return right;
 	}
 
 	current->node = current->node - 1;
@@ -55,7 +56,7 @@ int nextDirection(WayOut *current, int width)
 	if (current->node->displayCharacter != '#' && current->node->isVisited == false)
 	{
 		current->node = current->node - width;
-		return 1;
+		return down;
 	}
 
 	current->node = current->node - width;
@@ -64,7 +65,7 @@ int nextDirection(WayOut *current, int width)
 	if (current->node->displayCharacter != '#' && current->node->isVisited == false)
 	{
 		current->node = current->node + width;
-		return 2;
+		return up;
 	}
 
 	current->node = current->node + width;
@@ -72,14 +73,14 @@ int nextDirection(WayOut *current, int width)
 	if (current->node->displayCharacter != '#' && current->node->isVisited == false)
 	{
 		current->node = current->node + 1;
-		return 3;
+		return left;
 	}
 
 	current->node = current->node + 1;
-	return 4;
+	return deadEnd;
 }
 
-void addTheNextNode(WayOut **current) 
+void addTheNextNode(WayOut **current)
 {
 	char displayCharacter = (char)219;
 	(*current)->next->previous = (*current);
@@ -89,10 +90,10 @@ void addTheNextNode(WayOut **current)
 	(*current)->node->isVisited = true;
 }
 
-void comeBackFromDeadEnd(WayOut **current, const int width) 
+void comeBackFromDeadEnd(WayOut **current, const int width)
 {
 	int possibleWays = 0;
-	do 
+	do
 	{
 		possibleWays = countPossibleWays(*current, width);
 		if (possibleWays == 0)
@@ -130,7 +131,7 @@ int countPossibleWays(WayOut *current, const int width)
 		current->node = current->node - width;
 
 	current->node = current->node - width;
-	if (current->node->displayCharacter != '#' && current->node->isVisited == false) 
+	if (current->node->displayCharacter != '#' && current->node->isVisited == false)
 	{
 		current->node = current->node + width;
 		possibleWays++;
@@ -140,7 +141,7 @@ int countPossibleWays(WayOut *current, const int width)
 		current->node = current->node + width;
 
 	current->node = current->node - 1;
-	if (current->node->displayCharacter != '#' && current->node->isVisited == false) 
+	if (current->node->displayCharacter != '#' && current->node->isVisited == false)
 	{
 		current->node = current->node + 1;
 		possibleWays++;
