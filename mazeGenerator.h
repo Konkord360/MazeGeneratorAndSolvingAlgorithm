@@ -2,9 +2,7 @@
 #define MAZEGENERATOR_H_
 #define minimumSize 2
 
-#include <stdio.h>
-#include <time.h>
-#include <string.h>
+#include "includes.h"
 #include <stdbool.h>
 
 typedef struct
