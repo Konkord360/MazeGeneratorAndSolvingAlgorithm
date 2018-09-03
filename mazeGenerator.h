@@ -16,9 +16,9 @@ typedef struct
 	bool isVisited;
 } Node;
 
-void initialize(const int width, const int height, Node **nodes);
+void initializeMaze(const int width, const int height, Node **nodes);
 void setExitAndEntrance(const int width, const int height, Node **nodes);
-Node *link(Node *n, const int width, const int height, Node **nodes);
+Node *linkNodes(Node *n, const int width, const int height, Node **nodes);
 void setupStartNodeForGenerator(Node **start, Node **last, Node **nodes,const int width);
 void resetLabirynth(int *width, int *height, Node **nodes);
 void getValuesFromCommandLineArguments(int *width, int *height, char ***argv);

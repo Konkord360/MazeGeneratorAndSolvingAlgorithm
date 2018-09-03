@@ -1,5 +1,5 @@
 #include "includes.h"
-void initialize(const int width, const int height, Node **nodes)
+void initializeMaze(const int width, const int height, Node **nodes)
 {
 	int i, j;
 	Node *current;
@@ -32,7 +32,7 @@ void setExitAndEntrance(const int width, const int height, Node **nodes)
 	(*nodes)[((width) * (height - 1)) - 1].displayCharacter = ' ';
 }
 
-Node *link(Node *current, const int width, const int height, Node **nodes)
+Node *linkNodes(Node *current, const int width, const int height, Node **nodes)
 {
 	int x, y, numberOfDirections = 4;
 	char dir;

@@ -8,7 +8,7 @@ void setDimensionsManually(int *width, int *height)
 		scanf("%d", &(*height));
 }
 
-void draw(const int width, const int height, const Node *nodes)
+void drawMaze(const int width, const int height, const Node *nodes)
 {
 	for (int i = 0; i < height; i++)
 	{
@@ -54,7 +54,7 @@ int viewMenu()
 
 void showTheWay(int *width, int *height, Node **nodes)
 {
-	draw(*width, *height, *nodes);
+	drawMaze(*width, *height, *nodes);
 	solvingAlgorithm(&(*nodes), *width, *height);
-	draw(*width, *height, *nodes);
+	drawMaze(*width, *height, *nodes);
 }

@@ -30,9 +30,9 @@ int main(int argc, char **argv)
 				argc = 1;
 			} while (!areSizesValid);
 
-			initialize(width, height, &nodes);
+			initializeMaze(width, height, &nodes);
 			setupStartNodeForGenerator(&start, &last, &nodes, width);
-			while ((last = link(last, width, height, &nodes)) != start);
+			while ((last = linkNodes(last, width, height, &nodes)) != start);
 			setExitAndEntrance(width, height, &nodes);
 			break;
 
